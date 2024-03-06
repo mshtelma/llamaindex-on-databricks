@@ -5,9 +5,10 @@
 # COMMAND ----------
 
 # MAGIC %pip install -r ../requirements.txt
-dbutils.library.restartPython()  # noqa
+# MAGIC dbutils.library.restartPython()  # noqa
 
 # COMMAND ----------
+
 from typing import List
 
 from pydantic import BaseModel
@@ -30,8 +31,11 @@ from databricks_llamaindex.databricks_vector_search import DatabricksVectorStore
 # COMMAND ----------
 
 
+
 # COMMAND ----------
+
 llm = DatabricksLLM(endpoint="databricks-mixtral-8x7b-instruct")
+
 # COMMAND ----------
 
 choices = [
@@ -80,6 +84,7 @@ print(query_str, "  ", str(response))
 
 
 # COMMAND ----------
+
 class Answer(BaseModel):
     choice: int
     reason: str
@@ -155,6 +160,7 @@ route_query(
 
 
 # COMMAND ----------
+
 class RouterQueryEngine(CustomQueryEngine):
     """Use our Pydantic program to perform routing."""
 
@@ -195,7 +201,6 @@ class RouterQueryEngine(CustomQueryEngine):
 
 # COMMAND ----------
 
-# COMMAND ----------
 context = dbutils.entry_point.getDbutils().notebook().getContext()  # noqa
 token = context.apiToken().get()
 host = context.apiUrl().get()
@@ -236,6 +241,7 @@ spark_index = VectorStoreIndex.from_vector_store(spark_dvs)
 spark_query_engine = spark_index.as_query_engine()
 
 # COMMAND ----------
+
 router_query_engine = RouterQueryEngine(
     query_engines=[finreg_query_engine, spark_query_engine],
     choice_descriptions=choices,
@@ -250,4 +256,3 @@ print(f"Answer: {response.response}\n\n")
 print(f"Used sources ({len(response.source_nodes)}):")
 for node in response.source_nodes:
     print(f"Source: {node.text}")
-# COMMAND ----------

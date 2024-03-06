@@ -30,12 +30,12 @@ set_global_service_context(service_context)
 # COMMAND ----------
 
 dvs = DatabricksVectorStore(
-    endpoint="dbdemos_vs_endpoint",
-    index_name="main__build.rag_chatbot_michael_shtelma.databricks_pdf_documentation_self_managed_vs_index",
+    endpoint="shared-demo-endpoint",
+    index_name="souvik_att_demo.default.wiki_articles_demo_bge_index",
     host=host,
     token=token,
-    text_field="content",
-    embedding_field="embedding",
+    text_field="text",
+    embedding_field="__db_text_vector",
     id_field="id",
 )
 # dvs.add(docs_list)
@@ -46,7 +46,7 @@ query_engine = dvs_index.as_query_engine()
 # COMMAND ----------
 
 # Query and print response
-response = query_engine.query("What is Unity Catalog?")
+response = query_engine.query("Who is Hercules?")
 print(response)
 
 # COMMAND ----------
